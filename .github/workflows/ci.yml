@@ -21,6 +21,7 @@ jobs:
         uses: helm/kind-action@v1
         with:
           config: kind-config.yaml
+          cluster_name: devops-infra-lab 
 
       - name: Load image in kind
         run: kind load docker-image doc-hello-world-im:latest --name devops-infra-lab
