@@ -12,9 +12,19 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: docker build -t hello-world-app -f Dockerfile_hello_world .
+        run: docker build -t doc-hello-world-im -f Dockerfile_hello_world .
 
       - name: Run container
-        run: docker run hello-world-app:latest
+        run: docker run doc-hello-world-im:latest
 
+      - name: Create kind cluster
+        run: helm/kind-action@v1
 
+      - name: Load image in kind
+        run: kind load docker-image doc-hello-world-im:latest
+
+      - name: Deploy in k8s
+        run: kubectl apply -f ./k8s
+
+      - name: Check pods
+        run: kubectl get pods
