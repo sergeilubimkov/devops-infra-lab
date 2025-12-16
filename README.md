@@ -21,26 +21,30 @@
 - Автодеплой через GitHub Actions
 
 ### <a name="hello_world"></a>Hello world!
-Это простое Python-приложение, реализующее минимальный HTTP‑сервер, предназначенный для учебных целей и демонстрации работы readiness / liveness probes в Kubernetes.  
-Приложение:
-- запускает HTTP‑сервер на порту 9000
-- обрабатывает входящие GET‑запросы
-- предоставляет отдельный health‑endpoint для Kubernetes
+Это простое Python-приложение, реализующее минимальный HTTP‑сервер, предназначенный для учебных целей и демонстрации работы readiness / liveness probes в Kubernetes.   
+  
+  Приложение:
+  - запускает HTTP‑сервер на порту 9000
+  - обрабатывает входящие GET‑запросы
+  - предоставляет отдельный health‑endpoint для Kubernetes
 
 #### Поведение приложения
 1. Health‑endpoint
 ```GET /health```
 - Возвращает HTTP статус 200 OK
-- Используется Kubernetes для проверки готовности или живости контейнера
-Пример ответа:
-```OK```
+- Используется Kubernetes для проверки готовности или живости контейнера  
+
+  Пример ответа:
+  ```OK```
+
 
 2. Основной endpoint
 ```GET / ``` (и любые другие пути)
 - Возвращает HTTP статус 200 OK
 - Используется как основной ответ приложения
-Пример ответа:
-```Hello world! Don't  sleep! Time to work!```
+
+  Пример ответа:
+  ```Hello world! Don't  sleep! Time to work!```
 
 ### <a name="dockerfile"></a>Dockerfile
 Dockerfile для hello_world.py, создает docker образ приложения.
