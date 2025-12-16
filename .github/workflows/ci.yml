@@ -7,6 +7,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - run: docker build -t hello-world-app -f Dockerfile_hello_world .
-      - run: docker run hello-world-app:latest
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t hello-world-app -f Dockerfile_hello_world .
+
+      - name: Run container
+        run: docker run hello-world-app:latest
+
+
