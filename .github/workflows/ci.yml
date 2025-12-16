@@ -14,8 +14,8 @@ jobs:
       - name: Build Docker image
         run: docker build -t doc-hello-world-im -f Dockerfile_hello_world .
 
-      - name: Run container
-        run: docker run doc-hello-world-im:latest
+      #- name: Run container
+      #  run: docker run doc-hello-world-im:latest
 
       - name: Create kind cluster
         run: helm/kind-action@v1
