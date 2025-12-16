@@ -18,7 +18,7 @@ jobs:
       #  run: docker run doc-hello-world-im:latest
 
       - name: Create kind cluster
-        run: helm/kind-action@v1
+        uses: helm/kind-action@v1
 
       - name: Load image in kind
         run: kind load docker-image doc-hello-world-im:latest
