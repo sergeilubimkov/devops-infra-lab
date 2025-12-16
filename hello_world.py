@@ -9,7 +9,7 @@ class SimpleHandler(BaseHTTPRequestHandler):
         else:
             self.send_response(200)
             self.end_headers()
-            self.wfile.write("Hello world! Don't  sleep! Time to work!")
+            self.wfile.write(b"Hello world! Don't  sleep! Time to work!")
 
 server = HTTPServer(("0.0.0.0", 9000), SimpleHandler)
 server.serve_forever()

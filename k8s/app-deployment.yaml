@@ -17,7 +17,7 @@ spec:
       containers:
       - name: hello-world
         image: doc-hello-world-im:latest
-        #imagePullPolicy: Never  
+       #imagePullPolicy: Never  
         ports:
         - containerPort: 9000
         readinessProbe:
