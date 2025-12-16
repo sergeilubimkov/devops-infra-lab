@@ -19,9 +19,11 @@ jobs:
 
       - name: Create kind cluster
         uses: helm/kind-action@v1
+        with:
+          config: kind-config.yaml
 
       - name: Load image in kind
-        run: kind load docker-image doc-hello-world-im:latest
+        run: kind load docker-image doc-hello-world-im:latest --name devops-infra-lab
 
       - name: Deploy in k8s
         run: kubectl apply -f ./k8s
