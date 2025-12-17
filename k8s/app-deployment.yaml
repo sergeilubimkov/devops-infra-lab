@@ -9,7 +9,7 @@ spec:
   selector:
     matchLabels:
       app: hello-world
-  template: 
+  template:
     metadata:
       labels:
         app: hello-world
@@ -17,7 +17,7 @@ spec:
       containers:
       - name: hello-world
         image: doc-hello-world-im:latest
-       #imagePullPolicy: Never  
+        imagePullPolicy: Never
         ports:
         - containerPort: 9000
         readinessProbe:
@@ -27,4 +27,4 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 5
 
-        
+
