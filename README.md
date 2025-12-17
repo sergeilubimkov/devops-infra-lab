@@ -13,12 +13,16 @@
 Проект состоит из обычного приложения "Hello world!", Dockerfile для этого приложения и простого CI
 
 **Было реализовано:**
-- Dockerfile
-- Автоматическая сборка образа при push
-- проверка сборки
-- Deployment с 3 репликами
-- Service для доступа
-- Автодеплой через GitHub Actions
+- Dockerfile для Python-приложения
+- Автоматическая сборка Docker-образа при push в репозиторий
+- CI pipeline на GitHub Actions
+- Локальный Kubernetes-кластер (kind), поднимаемый в CI
+- Kubernetes Deployment с 3 репликами
+- readinessProbe для проверки готовности приложения
+- Service для доступа к приложению
+- Автоматический деплой в Kubernetes через GitHub Actions (kind cluster используется для CI)
+
+readinessProbe используется для контроля готовности приложения и исключения pod’ов из Service при ошибках.
 
 ### <a name="hello_world"></a>Hello world!
 Это простое Python-приложение, реализующее минимальный HTTP‑сервер, предназначенный для учебных целей и демонстрации работы readiness / liveness probes в Kubernetes.   
@@ -50,7 +54,7 @@
 Dockerfile для hello_world.py, создает docker образ приложения.
 
 ### <a name="сi"></a>CI
-Пайплайн CI для Github Action, изучение Github Action.
+Пайплайн CI для Github Action, изучение Github Actions.
 
 ### <a name="starting"></a>Как запустить локально
 Перед запуском необходимо установить docker и kind на сервер.
