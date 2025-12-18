@@ -1,4 +1,4 @@
-# Небольшой DevOps-проект для демонстрации навыков Docker и CI/CD.
+# Небольшой DevOps-проект.
 
 ## Содержание
 - [Структура и описание проекта](#project_description)
@@ -21,6 +21,7 @@
 - readinessProbe для проверки готовности приложения
 - Service для доступа к приложению
 - Автоматический деплой в Kubernetes через GitHub Actions (kind cluster используется для CI)
+- Infrastructure: Terraform поднимает VPC, subnet, VM
 
 readinessProbe используется для контроля готовности приложения и исключения pod’ов из Service при ошибках.
 
