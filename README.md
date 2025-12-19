@@ -7,6 +7,7 @@
 - [CI](#ci)
 - [Как запустить локально](#starting)
 - [Проверка](#checkig_work)
+- [Kubernetes](#kuber)
 
 ### <a name="project_description"></a>Структура и описание проекта
 Небольшой проект для укрепления навыков и изучения Github Action.  
@@ -73,3 +74,27 @@ kubectl get pods
 kubectl get svc
 ```
 
+### <a name="kuber">Kubernetes
+
+Проект использует Kubernetes в двух контекстах:
+
+### CI environment
+В CI используется локальный Kubernetes-кластер на базе **kind**:
+- kind cluster поднимается внутри GitHub Actions
+- Docker-образы загружаются в кластер через `kind load docker-image`
+- используется для тестирования Deployment и Service
+
+### Runtime / Cloud environment
+В облаке используется **k3s**, установленный на VM, созданной Terraform’ом:
+- container runtime: containerd
+- Docker напрямую не используется
+
+### Работа с Docker-образами в k3s
+Так как k3s использует containerd, локально собранные Docker-образы
+не видны Kubernetes по умолчанию.
+
+Для загрузки образа используется:
+
+```bash
+docker save doc-hello-world-im:latest -o app-image.tar
+sudo k3s ctr images import app-image.tar
