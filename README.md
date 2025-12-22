@@ -23,6 +23,7 @@
 - Service для доступа к приложению
 - Автоматический деплой в Kubernetes через GitHub Actions (kind cluster используется для CI)
 - Infrastructure: Terraform поднимает VPC, subnet, VM
+- Monitoring с помощью Prometheus и Grafana
 
 readinessProbe используется для контроля готовности приложения и исключения pod’ов из Service при ошибках.
 
@@ -59,13 +60,15 @@ Dockerfile для hello_world.py, создает docker образ прилож�
 Пайплайн CI для Github Action, изучение Github Actions.
 
 ### <a name="starting"></a>Как запустить локально
-Перед запуском необходимо установить docker и kind на сервер.
+Перед запуском необходимо установить docker, helm и kind на сервер.
 
 ```
 git pull
 docker build -t doc-hello-world-im -f Dockerfile_hello_world .
 kind create cluster --config kind-config.yaml
 kind load docker-image doc-hello-world-im:latest --name devops-infra-lab
+kubectl create namespace monitoring
+helm install monitoring prometheus-community/kube-prometheus-stack --namespace monitoring
 kubectl apply -f ./k8s
 ```
 ### <a name="checkig_work"></a>Проверка 
@@ -98,3 +101,8 @@ kubectl get svc
 ```bash
 docker save doc-hello-world-im:latest -o app-image.tar
 sudo k3s ctr images import app-image.tar
+```
+
+### Monitoring
+- Prometheus собирает метрики
+- Grafana визуализирует состояние приложения
