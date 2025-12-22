@@ -71,6 +71,12 @@ kubectl create namespace monitoring
 helm install monitoring prometheus-community/kube-prometheus-stack --namespace monitoring
 kubectl apply -f ./k8s
 ```
+#### Проброс портов 
+```
+kubectl port-forward -n monitoring svc/monitoring-kube-prometheus-prometheus 9090
+kubectl port-forward svc/app-service 9000:80
+```
+
 ### <a name="checkig_work"></a>Проверка 
 ```
 kubectl get pods
