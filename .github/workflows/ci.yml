@@ -29,6 +29,9 @@ jobs:
       - name: Create namespace monitoring
         run: kubectl create namespace monitoring
 
+      - name: Install repo prometheus-community
+        run: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts && helm repo update
+
       - name: Install monitoring stack
         run: helm install monitoring prometheus-community/kube-prometheus-stack --namespace monitoring
 
