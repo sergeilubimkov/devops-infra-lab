@@ -26,6 +26,12 @@ jobs:
       - name: Load image in kind
         run: kind load docker-image doc-hello-world-im:latest --name devops-infra-lab
 
+      - name: Create namespace monitoring
+        run: kubectl create namespace monitoring
+
+      - name: Install monitoring stack
+        run: helm install monitoring prometheus-community/kube-prometheus-stack --namespace monitoring
+
       - name: Deploy in k8s
         run: kubectl apply -f ./k8s
 
