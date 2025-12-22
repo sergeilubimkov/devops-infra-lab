@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: app-service-monitor
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  endpoints:
+    - interval: 15s
+      port: http
+      path: /metrics
+      scrapeTimeout: 14s
+  namespaceSelector:
+    matchNames:
+      - default
+  selector:
+    matchLabels:
+      app: hello-world
