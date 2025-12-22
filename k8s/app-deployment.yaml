@@ -26,5 +26,11 @@ spec:
             port: 9000
           initialDelaySeconds: 5
           periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 9000
+          initalDelaySeconds: 10
+          periodSeconds: 10
 
 
