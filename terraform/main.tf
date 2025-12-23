@@ -15,11 +15,11 @@ provider "yandex" {
 }
 
 
-resource "yandex_vpc_network" "network" { # my-cloud
+resource "yandex_vpc_network" "network" { 
     name = "devops-network"
 }
 
-resource "yandex_vpc_subnet" "subnet"{ # fl8tmqht2tca6g60bopp
+resource "yandex_vpc_subnet" "subnet"{ 
     name = "devops-subnet"
     zone = var.zone
     network_id = yandex_vpc_network.network.id
@@ -56,16 +56,17 @@ resource "yandex_vpc_security_group" "security_group" {
 }
 
 resource "yandex_compute_disk" "boot_disk"{
-    name = "my-boot-disk"
+    count = 2
+    name = "my-boot-disk-${count.index}"
     zone = var.zone
-    size = "25"
+    size = "50"
     image_id = "fd8umfn3mighedglnjue"
 }
 
 resource "yandex_compute_instance" "vm_ubuntu" {
-  name = "vm-1-terraform"
+  count = 2
+  name = "vm-${count.index}-terraform"
   zone = var.zone
-
     resources {
         cores = 4
         memory = 4
@@ -73,11 +74,11 @@ resource "yandex_compute_instance" "vm_ubuntu" {
 
     boot_disk{
         auto_delete = true
-        disk_id  = yandex_compute_disk.boot_disk.id
+        disk_id  = yandex_compute_disk.boot_disk[count.index].id
     }
 
     network_interface {
-        subnet_id = yandex_vpc_subnet.subnet.id #enphqr30g923g0d2j5ln
+        subnet_id = yandex_vpc_subnet.subnet.id 
         nat = true
         security_group_ids = [yandex_vpc_security_group.security_group.id]
     }
