@@ -24,6 +24,8 @@
 - Автоматический деплой в Kubernetes через GitHub Actions (kind cluster используется для CI)
 - Infrastructure: Terraform поднимает VPC, subnet, VM
 - Monitoring с помощью Prometheus и Grafana
+- Ansible полностью настраивает систему
+- Ручная настройка не требуется
 
 readinessProbe используется для контроля готовности приложения и исключения pod’ов из Service при ошибках.
 
