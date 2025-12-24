@@ -1,0 +1,20 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for docker
+
+system_require_packages:
+  - "apt-transport-https"
+  - "ca-certificates"
+  - "curl"
+  - "software-properties-common"
+  - "python3-pip"
+  - "virtualenv"
+  - "python3-setuptools"
+
+dockers_pkg:
+  - "docker-ce"
+  - "docker-ce-cli"
+  - "containerd.io"
+
+docker_users:
+  - "ubuntu"

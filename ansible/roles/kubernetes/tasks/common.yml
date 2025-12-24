@@ -1,0 +1,109 @@
+---
+## 1.1
+- name: Disable SWAP
+  ansible.builtin.command: swapoff -a
+  when: ansible_swaptotal_mb > 0
+
+- name: Disable SWAP in fstab
+  ansible.builtin.replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
+
+## 1.2
+- name: Kernel Modules
+  ansible.builtin.blockinfile:
+    path: /etc/modules-load.d/k8s.conf
+    create: true
+    block: |
+      overlay
+      br_netfilter
+
+- name: Load Kernel Modules
+  community.general.modprobe:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - overlay
+    - br_netfilter
+
+## 1.3
+- name: Set Sysctl Parameterts
+  ansible.builtin.sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: true
+  loop:
+    - { name: net.bridge.bridge-nf-call-iptables, value: 1 }
+    - { name: net.ipv4.ip_forward, value: 1 }
+    - { name: net.bridge.bridge-nf-call-ip6tables, value: 1 }
+
+## 1.4
+- name: Install Containerd
+  ansible.builtin.apt:
+    name: containerd.io
+    state: present
+
+- name: Create Containerd directory
+  ansible.builtin.file:
+    path: /etc/containerd
+    state: directory
+
+- name: Generate Containerd config
+  ansible.builtin.command: containerd config default
+  register: containerd_config
+  changed_when: false
+
+- name: Write Containerd Config
+  ansible.builtin.copy:
+    content: "{{ containerd_config.stdout }}"
+    dest: /etc/containerd/config.toml
+
+- name: Configuring Systemd cgroup Driver for Containerd
+  ansible.builtin.lineinfile:
+    path: /etc/containerd/config.toml
+    regexp: "SystemdCgroup = false"
+    line: "SystemdCgroup = true"
+
+- name: Enable Containerd and Start
+  ansible.builtin.systemd:
+    name: containerd
+    state: restarted
+    enabled: true
+    daemon-reload: true
+
+## 1.5
+- name: Add Kubernetes apt-key
+  ansible.builtin.get_url:
+    url: https://pkgs.k8s.io/core:/stable:/v1.34/deb/Release.key
+    dest: /etc/apt/keyrings/kubernetes-apt-keyring.asc
+    mode: "0644"
+    force: true
+
+- name: Add Kubernetes APT repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.asc] https://pkgs.k8s.io/core:/stable:/v1.34/deb/ /"
+    state: present
+    update_cache: true
+
+- name: Install Kubelet
+  ansible.builtin.apt:
+    name: kubelet=1.34.*
+    state: present
+  register: apt_action
+  retries: 10
+  delay: 20
+  until: apt_action is success
+
+- name: Install Kubeadm
+  ansible.builtin.apt:
+    name: kubeadm=1.34.*
+    state: present
+
+- name: Enable Kubelet
+  ansible.builtin.service:
+    name: kubelet
+    enabled: true
+
+

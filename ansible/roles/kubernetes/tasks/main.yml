@@ -1,0 +1,18 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for kubernetes
+
+- name: Run Common Kubernetes Tasks
+  ansible.builtin.import_tasks: common.yml
+
+- name: Run Master tasks
+  ansible.builtin.include_tasks: for_master.yml
+  when: "'MasterNodes' in group_names"
+
+- name: Run Worker tasks
+  ansible.builtin.include_tasks: for_worker.yml
+  when: "'WorkerNodes' in group_names"
+
+- name: Checking
+  ansible.builtin.include_tasks: checking.yml
+  when: "'MasterNodes' in group_names"

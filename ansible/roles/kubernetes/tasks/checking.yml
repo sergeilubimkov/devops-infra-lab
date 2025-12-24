@@ -1,0 +1,25 @@
+---
+## checking 
+
+- name: Check Joinning Worker Node in Cluster
+  ansible.builtin.command: kubectl get nodes
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: node_check
+  until:
+    - node_check.rc == 0
+    - '"Ready" in node_check.stdout'
+  retries: 20
+  delay: 10
+  changed_when: false
+
+- name: Get Cluster Nodes
+  ansible.builtin.command: kubectl get nodes -o wide
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: nodes_output
+  changed_when: false
+
+- name: Print Cluster Status
+  ansible.builtin.debug:
+    var: nodes_output.stdout_lines

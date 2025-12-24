@@ -1,0 +1,13 @@
+[MasterNodes]
+MasterNode ansible_host=158.160.121.51
+
+[WorkerNodes]
+WorkerNode ansible_host=158.160.124.60
+
+[vm:children]
+MasterNodes
+WorkerNodes
+
+[vm:vars]
+ansible_user=ubuntu
+ansible_ssh_private_key_file=~/.ssh/id_ed25519

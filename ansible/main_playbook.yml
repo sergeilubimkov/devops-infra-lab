@@ -1,0 +1,12 @@
+---
+- name: Deploy Server
+  hosts: all
+  become: true
+
+  roles:
+    - docker
+    - kubernetes
+
+  tasks:
+    - name: Reboot System
+      ansible.builtin.reboot:

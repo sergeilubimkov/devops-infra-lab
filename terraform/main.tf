@@ -30,6 +30,18 @@ resource "yandex_vpc_security_group" "security_group" {
   name = "devops-security-g"
   network_id = yandex_vpc_network.network.id
 
+  ingress {
+    protocol       = "TCP"
+    port           = 6443
+    v4_cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    protocol          = "ANY"
+    predefined_target = "self_security_group"
+    description       = "Allow communication within the security group"
+  }
+
   ingress{
     protocol = "TCP"
     port =22

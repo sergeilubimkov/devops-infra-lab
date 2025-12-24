@@ -1,0 +1,12 @@
+---
+- name: DEBUG - Check join command
+  ansible.builtin.debug:
+    msg: "Command is: {{ hostvars[groups['MasterNodes'][0]]['gen_token']['stdout'] }}"
+
+## worker 
+- name: Join in Cluster Worker Node
+  ansible.builtin.command: "{{ hostvars[groups['MasterNodes'][0]]['gen_token']['stdout'] }}"
+  args:
+    creates: /etc/kubernetes/kubelet.conf
+
+
