@@ -17,6 +17,11 @@ def hello():
     REQUESTS.labels(endpoint="/").inc()
     return "Hello world! Don't sleep! Time to work!"
 
+@app.route("/version")
+def hello():
+    REQUESTS.labels(endpoint="/").inc()
+    return f"version {APP_VERSION}"
+
 @app.route("/health")
 def health():
     return "OK", 200
