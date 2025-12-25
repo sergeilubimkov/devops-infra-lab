@@ -1,7 +1,10 @@
+import os
 from flask import Flask, Response
 from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
 
 app = Flask(__name__)
+
+APP_VERSION = os.getenv("APP_VERSION","dev")
 
 REQUESTS = Counter(
     "http_requests_total",
