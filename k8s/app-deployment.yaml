@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
       - name: hello-world
-        image: doc-hello-world-im:latest
-        imagePullPolicy: Never
+        image: ghcr.io/<GITHUB_USERNAME>/doc-hello-world-im:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 9000
         readinessProbe:
