@@ -39,3 +39,9 @@ jobs:
 
              docker push $IMAGE
 
+      - name: Deploy to Kubernetes
+        run: |
+             ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_IP }} << EOF
+             kubectl set image deployment/app-deployment \
+             hello-world=ghcr.io/${{ github.repository_owner }}/doc-hello-world-im:${APP_VERSION}
+             EOF
