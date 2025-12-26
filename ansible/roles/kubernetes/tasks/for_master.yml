@@ -48,6 +48,27 @@
     group: "{{ kube_user }}"
     mode: '0600'
 
+- name: Ensure .ssh directory exists
+  file:
+    path: "/home/{{ kube_user }}/.ssh"
+    state: directory
+    owner: "{{ kube_user }}"
+    group: "{{ kube_user }}"
+    mode: "0700"
+
+- name: Add GitHub Actions CI public key
+  authorized_key:
+    user: "{{ kube_user }}"
+    key: "{{ lookup('file', '/home/t/.ssh/github_ci_key.pub') }}"
+
+- name: Copy k8s manifests
+  copy:
+    src: /home/t/devops-infra-lab/k8s/
+    dest: /home/{{ kube_user }}/k8s/
+    owner: "{{ kube_user }}"
+    group: "{{ kube_user }}"
+    mode: "0644"
+
 - name: Generate join token
   ansible.builtin.command: kubeadm token create --print-join-command
   register: gen_token
