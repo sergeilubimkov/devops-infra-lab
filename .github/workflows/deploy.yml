@@ -41,17 +41,20 @@ jobs:
 
       - name: Setup SSH
         run: |
-             echo "Secret length:"
-             echo "${{ secrets.SSH_PRIVATE_KEY_B64 }}" | wc -c
-             if [ -z "${{ secrets.SSH_PRIVATE_KEY_B64 }}" ]; then
-             echo "SSH_PRIVATE_KEY_B64 is empty"
-             exit 1
-             fi
+             set -x
+             whoami
+             pwd
+             ls -la ~
 
              mkdir -p ~/.ssh
+             ls -la ~
+
              echo "${{ secrets.SSH_PRIVATE_KEY_B64 }}" | base64 -d > ~/.ssh/id_ed25519
+             ls -la ~/.ssh
              chmod 600 ~/.ssh/id_ed25519
+             ls -la ~/.ssh
              ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+             ls -la ~/.ssh
 
       - name: Deploy to Kubernetes
         run: |
