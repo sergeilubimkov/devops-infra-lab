@@ -41,8 +41,8 @@ jobs:
 
       - name: Setup SSH
         run: |
-             set -e
-
+             echo "Secret length:"
+             echo "${{ secrets.SSH_PRIVATE_KEY_B64 }}" | wc -c
              if [ -z "${{ secrets.SSH_PRIVATE_KEY_B64 }}" ]; then
              echo "SSH_PRIVATE_KEY_B64 is empty"
              exit 1
