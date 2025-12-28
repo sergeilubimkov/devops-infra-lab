@@ -47,11 +47,11 @@ jobs:
              ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts || true
 
       - name: Apply manifest
-        run: kubectl apply -f /home/${{secret.SSH_USER}}/k8s      
+        run: kubectl apply -f /home/${{secrets.SSH_USER}}/k8s      
 
       - name: Deploy to Kubernetes
         run: |
-             ssh -o StrictHostKeyChecking=no ${{secret.SSH_USER}}@${{ secrets.SERVER_IP }} << EOF
+             ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SERVER_IP }} << EOF
              kubectl set image k8s/app-deployment \
              hello-world=ghcr.io/${{ github.repository_owner }}/doc-hello-world-im:${APP_VERSION}
              EOF
