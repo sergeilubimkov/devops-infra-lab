@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Pull image
-        run: docker pull ghcr.io/sergeilubimkov/doc-hello-world-im:latest
+        run: docker pull ghcr.io/sergeilubimkov/doc-hello-world-im:v1.1.1
 
       - name: Create kind cluster
         uses: helm/kind-action@v1
@@ -21,7 +21,7 @@ jobs:
           cluster_name: devops-infra-lab
 
       - name: Load image in kind
-        run: kind load docker-image ghcr.io/sergeilubimkov/doc-hello-world-im:latest --name devops-infra-lab
+        run: kind load docker-image ghcr.io/sergeilubimkov/doc-hello-world-im:v1.1.1 --name devops-infra-lab
 
       - name: Create namespace monitoring
         run: kubectl create namespace monitoring
