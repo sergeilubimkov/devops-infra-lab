@@ -18,7 +18,7 @@ def hello():
     return "Hello world! Don't sleep! Time to work!"
 
 @app.route("/version")
-def hello():
+def version():
     REQUESTS.labels(endpoint="/").inc()
     return f"version {APP_VERSION}"
 
