@@ -36,7 +36,7 @@ jobs:
         run: kubectl apply -f ./k8s/app-deployment-kind.yaml -f ./k8s/app-service.yaml -f ./k8s/app-serviceMonitoring.yaml
 
       - name: Wait pods to be ready
-        run: kubectl wait --for=condition=Ready pods deployment --all --timeout=300s
+        run: kubectl wait --for=condition=Ready pods --all --timeout=300s
 
       - name: Check pods
         run: kubectl get pods
