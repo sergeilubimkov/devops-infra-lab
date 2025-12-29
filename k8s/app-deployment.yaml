@@ -14,9 +14,11 @@ spec:
       labels:
         app: hello-world
     spec:
+      imagePullSecrets:
+        - name: ghcr
       containers:
       - name: hello-world
-        image: ghcr.io/<GITHUB_USERNAME>/doc-hello-world-im:latest
+        image: ghcr.io/sergeilubimkov/doc-hello-world-im:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 9000
