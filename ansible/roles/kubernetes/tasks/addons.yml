@@ -1,0 +1,48 @@
+---
+## helm
+
+- name: Get Helm
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    dest: /tmp/get-helm-3
+    mode: "0700"
+
+- name: Install Helm
+  ansible.builtin.command: /tmp/get-helm-3
+  args:
+    creates: /usr/local/bin/helm
+
+- name: Add Repo Prometheus
+  kubernetes.core.helm_repository:
+    name: prometheus-community
+    repo_url: https://prometheus-community.github.io/helm-charts
+
+- name: Create Namespace Monitoring
+  kubernetes.core.k8s:
+    kubeconfig: /etc/kubernetes/admin.conf
+    api_version: v1
+    kind: Namespace
+    name: monitoring
+    state: present
+
+- name: Install/Upgrade Kube-Prometheus-stack
+  kubernetes.core.helm:
+    kubeconfig: /etc/kubernetes/admin.conf
+    name: monitoring
+    chart_ref: prometheus-community/kube-prometheus-stack
+    release_namespace: monitoring
+    update_repo_cache: true
+    wait: true
+
+- name: Read password Grafana
+  kubernetes.core.k8s_info:
+    kubeconfig: /etc/kubernetes/admin.conf
+    api_version: v1
+    kind: Secret
+    namespace: monitoring
+    name: monitoring-grafana
+  register: grafana_secret
+
+- name: DEBUG - Get password Grafana
+  ansible.builtin.debug:
+    msg: "Password is: {{ grafana_secret.resources[0].data['admin-password'] | b64decode }}"

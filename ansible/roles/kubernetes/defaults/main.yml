@@ -3,4 +3,7 @@
 # defaults file for kubernetes
 kube_user: ubuntu
 
-
+kube_pkg:
+  - "python3-kubernetes"
+  - "python3-yaml"
+  - "python3-jsonpatch"

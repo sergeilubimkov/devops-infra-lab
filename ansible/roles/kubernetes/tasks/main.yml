@@ -13,6 +13,10 @@
   ansible.builtin.include_tasks: for_worker.yml
   when: "'WorkerNodes' in group_names"
 
+- name: Run Addons tasks
+  ansible.builtin.include_tasks: addons.yml
+  when: "'MasterNodes' in group_names"
+
 - name: Checking
   ansible.builtin.include_tasks: checking.yml
   when: "'MasterNodes' in group_names"
