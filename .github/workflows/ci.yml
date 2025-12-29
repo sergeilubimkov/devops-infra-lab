@@ -38,8 +38,22 @@ jobs:
       - name: Deploy in k8s
         run: kubectl apply -f ./k8s
 
+      - name: Show app resources
+        run: |
+          kubectl get deploy,rs,pods -o wide
+          kubectl describe deployment app-deployment || true
+          kubectl get events --sort-by=.lastTimestamp | tail -n 200
+
       - name: Wait pods to be ready
         run: kubectl wait --for=condition=Available deployment --all --timeout=300s
+
+      - name: Debug app (on failure)
+        if: failure()
+        run: |
+          kubectl get pods -o wide
+          kubectl describe pods
+          kubectl logs -l app=app --all-containers --tail=200 || true
+          kubectl get events --sort-by=.lastTimestamp | tail -n 200
 
       - name: Check pods
         run: kubectl get pods
