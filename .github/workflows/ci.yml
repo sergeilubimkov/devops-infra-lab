@@ -21,7 +21,7 @@ jobs:
         uses: helm/kind-action@v1
         with:
           config: kind-config.yaml
-          cluster_name: devops-infra-lab 
+          cluster_name: devops-infra-lab
 
       - name: Load image in kind
         run: kind load docker-image doc-hello-world-im:latest --name devops-infra-lab
@@ -39,7 +39,7 @@ jobs:
         run: kubectl apply -f ./k8s
 
       - name: Wait pods to be ready
-        run: kubectl wait --for=condition=Ready pods --all --timeout=20s
+        run: kubectl wait --for=condition=Ready pods --all --timeout=180s
 
       - name: Check pods
         run: kubectl get pods
